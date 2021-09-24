@@ -3,9 +3,17 @@ class TrieNode:
         self.char = char
         self.isWord = isWord
         self.nodes = nodes
-        self.called_times = called_times  # number of times this node has been called
+        self.__called_times = called_times  # number of times this node has been called
         if nodes is None:
             self.nodes = []
+
+    @property
+    def called_times(self):
+        return self.__called_times
+
+    def increment_called_times(self):
+        self.__called_times += 1
+        print(self.__called_times)
 
     def __str__(self):
         return str(self.char)
@@ -60,6 +68,7 @@ class Trie:
     def __get_word(self, node, s=""):
         if node:
             if node.isWord and s != "":
+                node.increment_called_times() # increment by 1
                 self.__list.append(s)
 
             for i in node.nodes:
