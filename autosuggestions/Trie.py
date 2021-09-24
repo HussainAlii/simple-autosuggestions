@@ -13,7 +13,6 @@ class TrieNode:
 
     def increment_called_times(self):
         self.__called_times += 1
-        print(self.__called_times)
 
     def __str__(self):
         return str(self.char)
@@ -31,7 +30,7 @@ class Trie:
             for c in currentNode.nodes:
                 self.print_all(currentNode=c)
 
-    def insert(self, string):
+    def add(self, string):
         currentNode = self.root
         for i, c in enumerate(string):
             node = self.__get_node_from_char(currentNode, c)
@@ -87,7 +86,7 @@ class Trie:
     def import_from_txt(self, fileLocation: str):
         with open(fileLocation) as file:
             for line in file:
-                self.insert(line.strip())
+                self.add(line.strip())
 
     def run(self):
         x = input("Write any chars, 0 to exit:\n")
