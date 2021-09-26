@@ -1,2 +1,6 @@
 from autosuggestions.Trie import Trie
-from autosuggestions.LinkedList import LinkedList
+
+
+class SimpleAutosuggestions(Trie):
+    def __init__(self):
+        super().__init__()

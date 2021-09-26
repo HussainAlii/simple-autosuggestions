@@ -1,15 +1,15 @@
+from autosuggestions.LinkedList import LinkedList
+
+
 class TrieNode:
     def __init__(self, char, nodes=None, isWord=False, called_times=0):
         self.char = char
         self.isWord = isWord
         self.nodes = nodes
         self.__called_times = called_times  # number of times this node has been called
-        if nodes is None:
-            self.nodes = []
 
-    @property
-    def called_times(self):
-        return self.__called_times
+        if nodes is None:
+            self.nodes = LinkedList()  # create an empty LinkedList if not exist
 
     def increment_called_times(self):
         self.__called_times += 1
@@ -67,7 +67,7 @@ class Trie:
     def __get_word(self, node, s=""):
         if node:
             if node.isWord and s != "":
-                node.increment_called_times() # increment by 1
+                node.increment_called_times()  # increment by 1
                 self.__list.append(s)
 
             for i in node.nodes:

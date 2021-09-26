@@ -1,13 +1,15 @@
-import autosuggestions
+from autosuggestions import SimpleAutosuggestions
 
 def main():
 
-    trie = autosuggestions.Trie() # create new separate Trie
+    autosuggestions = SimpleAutosuggestions() # create new separate Trie
 
-    trie.import_from_txt('words.txt') # add multiple words from .txt file
-    trie.add("ayy") # or add word individually
+    autosuggestions.import_from_txt('words.txt') # add multiple words from .txt file
+    autosuggestions.add("ayy") # or add word individually
 
-    trie.run() # try it out
+    autosuggestions.get_suggestions("ay") # get suggestions
+
+    autosuggestions.run() # try it out
 
 if __name__ == '__main__':
     main()

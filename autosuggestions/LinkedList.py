@@ -56,6 +56,16 @@ class LinkedList:
         if self.head:
             self.head.reverse()
 
+    def __iter__(self):
+        node = self.head
+
+        while True:
+            if node is None:
+                break
+            yield node.val
+            node = node.next
+
+
     def printAll(self):
         x = str(self.head.val)
 
