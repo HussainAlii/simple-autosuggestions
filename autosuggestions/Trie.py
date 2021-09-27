@@ -113,8 +113,8 @@ class Trie:
                 self.add(line.strip())
 
     def run(self):
-        x = input("Write any chars, 0 to exit:\n")
+        x = input("Write Any String, or 0 to exit:\n")
         while x:
             x = self.get_suggestions(x)
             print(x)
-            x = input("Write any chars, 0 to exit:\n")
+            x = input("Write Any String, or 0 to exit:\n")
