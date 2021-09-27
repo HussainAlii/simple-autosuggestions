@@ -1,4 +1,3 @@
-
 class ListNode:
     def __init__(self, val=None, next=None):
         if val is None:
@@ -65,7 +64,6 @@ class LinkedList:
             yield node.val
             node = node.next
 
-
     def printAll(self):
         x = str(self.head.val)
 
@@ -79,7 +77,7 @@ class LinkedList:
             x = x + " -> " + str(head.val)
             head = head.next
 
-        print(x)
+        # print(x)
         return x
 
     def prepend(self, val):
@@ -113,3 +111,77 @@ class LinkedList:
         prev.next = node
         node.next = _next
 
+    def add_by_popularity(self, string, called_times):
+        node = self.head
+
+        index = 0
+        while True:
+
+            if node is None:
+                self.append((string,called_times))
+                break
+
+            if node.val[1] <= called_times:
+                self.insert(index,(string,called_times))
+                break
+
+            node = node.next
+            index += 1
+
+
+    def sort_by_popularity(self, node_index: int, called_times: int):
+        if node_index == 0:  # if node already at the beginning
+            return
+
+        node = self.head
+        index = 0
+        selected_node = None
+        selected_index = None
+
+        while True:
+            if index == node_index - 1:
+                selected_node = node.next  # save selected_node
+
+            if node.val.called_times <= called_times and selected_index is None:
+                selected_index = index
+
+            node = node.next
+            index += 1
+            if node is None:
+                break
+        if selected_node and selected_index is not None:
+            self.insert(selected_index, selected_node.val)
+            self.remove(node_index+1)
+
+    def remove(self, index: int):
+        if index == 0:  # if head
+            head = self.head
+            self.head = self.head.next
+            del head
+            return
+
+        i = 0
+        node = self.head
+        while True:
+            if i == index - 1:
+                node.next = node.next.next  # remove selected_node from position
+
+            if node.next is None:
+                self.tail = node
+
+            node = node.next
+            i += 1
+            if node is None:
+                break
+
+    # def replace(self, node1: ListNode = None, node2: ListNode = None, prev1: ListNode = None, prev2: ListNode = None):
+    #     prev2.next = node1
+    #
+    #     if prev1 is not None:
+    #         prev1.next = node2
+    #     else: # node1 is head
+    #         self.head = node2
+    #
+    #     node1.next, node2.next = node2.next, node1.next
+
+    # tail is not finished

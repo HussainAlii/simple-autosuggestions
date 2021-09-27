@@ -6,13 +6,13 @@ class TrieNode:
         self.char = char
         self.isWord = isWord
         self.nodes = nodes
-        self.__called_times = called_times  # number of times this node has been called
+        self.called_times = called_times  # number of times this node has been called
 
         if nodes is None:
             self.nodes = LinkedList()  # create an empty LinkedList if not exist
 
-    def increment_called_times(self):
-        self.__called_times += 1
+    def increment_called_times(self, increment_by: int = 1):
+        self.called_times = self.called_times + increment_by
 
     def __str__(self):
         return str(self.char)
@@ -35,7 +35,9 @@ class Trie:
         for i, c in enumerate(string):
             node = self.__get_node_from_char(currentNode, c)
 
-            if not node:
+            if node:
+                node, _ = node
+            else:
                 node = TrieNode(c, isWord=len(string) == i + 1)
                 currentNode.nodes.append(node)
 
@@ -48,38 +50,60 @@ class Trie:
     def search_node(self, string, currentNode=None):
         if currentNode is None:
             currentNode = self.root
-        for c in string:
-            node = self.__get_node_from_char(currentNode, char=c)
-            if node:
-                currentNode = node
+
+        prev_node = currentNode
+        index = None
+
+        for i, c in enumerate(string):
+            if len(string) - 1 == i:
+                prev_node = currentNode
+
+            result = self.__get_node_from_char(currentNode, char=c)
+            if result:
+                currentNode, index = result
+
             else:
                 return False
-        return currentNode
+        return currentNode, prev_node, index
 
-    def get_suggestions(self, string):
-        self.__list = []
-        node = self.search_node(string)
+    def get_suggestions(self, string, top: int = None):
+        self.__list = LinkedList()
+        self.__num_of_words = 0
+        result = self.search_node(string)
+        if result:
+            node, prev_list, prev_index = result
+            self.__get_word(node, string, original=string, nodes_List=prev_list.nodes, node_index=prev_index, top=top)
+
+        return [string for string, _ in self.__list]
+
+    def __get_word(self, node, string="", nodes_List: LinkedList = None, node_index: int = None, original="", top=None):
         if node:
-            self.__get_word(node, string)
+            if node.isWord and string != "":
+                if original == string:  # if the string same as the search one increment by Two
+                    node.increment_called_times(5)  # increment by 5
+                else:  # if the string similar to the search one increment by One
+                    node.increment_called_times(2)  # increment by 1
 
-        return self.__list
+                if nodes_List is not None:
+                    nodes_List.sort_by_popularity(node_index=node_index,
+                                                  called_times=node.called_times)  # sort linkedlist after incrementing the called_times
 
-    def __get_word(self, node, s=""):
-        if node:
-            if node.isWord and s != "":
-                node.increment_called_times()  # increment by 1
-                self.__list.append(s)
+                if top is not None and self.__num_of_words > top - 1:
+                    return
 
-            for i in node.nodes:
-                s += i.char
-                self.__get_word(i, s)
-                s = s[:len(s) - 1]
+                self.__list.add_by_popularity(string, node.called_times)
+                self.__num_of_words += 1
 
-    def __get_node_from_char(self, current_node, char):
+            for index, n in enumerate(node.nodes):
+                string += n.char
+                self.__get_word(node=n, string=string, nodes_List=node.nodes, node_index=index, top=top)
+                string = string[:len(string) - 1]
+
+    def __get_node_from_char(self, current_node, char):  # return node from multiple nodes that have specific char
         if current_node:
-            for node in current_node.nodes:
+            for i, node in enumerate(current_node.nodes):
                 if node.char == char:
-                    return node
+                    return node, i
 
         return None
 
