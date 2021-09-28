@@ -126,6 +126,6 @@ class TrieTree:
             print(x)
             x = input("Write Any String, or 0 to exit:\n")
 
-    def visualize(self):
-        visual = GraphVisualizer(self)
-        visual.visualize()
+    def visualize(self, start_with='', font_size=5, figure_size=(50, 50), node_size=80):
+        visual = GraphVisualizer(self, start_with=start_with)
+        visual.visualize(font_size=font_size, figure_size=figure_size, node_size=node_size)
