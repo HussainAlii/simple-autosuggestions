@@ -1,11 +1,13 @@
 from autosuggestions.LinkedList import LinkedList
+from autosuggestions.Visualizer import GraphVisualizer
 
 
 class TrieNode:
-    def __init__(self, char, nodes=None, isWord=False, called_times=0):
+    def __init__(self, char, key: int, nodes=None, isWord=False, called_times=0):
         self.char = char
         self.isWord = isWord
         self.nodes = nodes
+        self.key = key
         self.called_times = called_times  # number of times this node has been called
 
         if nodes is None:
@@ -18,9 +20,13 @@ class TrieNode:
         return str(self.char)
 
 
-class Trie:
+class TrieTree:
     def __init__(self):
-        self.root = TrieNode('')  # create an empty root node
+        self.root = TrieNode('', key=0)  # create an empty root node
+        self.__length = 1
+
+    def __len__(self):
+        return self.__length
 
     def print_all(self, currentNode=None):
         if currentNode is None:
@@ -38,7 +44,8 @@ class Trie:
             if node:
                 node, _ = node
             else:
-                node = TrieNode(c, isWord=len(string) == i + 1)
+                node = TrieNode(c, key=self.__length, isWord=len(string) == i + 1)
+                self.__length += 1
                 currentNode.nodes.append(node)
 
             currentNode = node
@@ -118,3 +125,7 @@ class Trie:
             x = self.get_suggestions(x)
             print(x)
             x = input("Write Any String, or 0 to exit:\n")
+
+    def visualize(self):
+        visual = GraphVisualizer(self)
+        visual.visualize()

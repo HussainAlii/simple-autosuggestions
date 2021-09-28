@@ -1,6 +1,6 @@
-from autosuggestions.Trie import Trie
+from autosuggestions.Trie import TrieTree
 
 
-class SimpleAutosuggestions(Trie):
+class SimpleAutosuggestions(TrieTree):
     def __init__(self):
         super().__init__()

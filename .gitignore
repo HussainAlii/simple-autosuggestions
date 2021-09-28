@@ -139,3 +139,7 @@ cython_debug/
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/inspectionProfiles/Project_Default.xml
 .idea/vcs.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/simple-autosuggestions.iml
+.idea/workspace.xml
